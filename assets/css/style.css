@@ -1,0 +1,315 @@
+:root {
+  --red: #bb2d3b;
+  --blue: #007bff;
+  --gray: #191a19;
+  --gray-2: #353535;
+  --gray-light: #bbbbbb;
+  --black: #000;
+  --box-shadow-dark: 0px 5px 10px 0px rgba(50, 50, 50, 0.8);
+  --box-shadow-light: -1px 1px 10px 0px #efe8e8;
+  font-size: 62.5%;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  /* box-shadow: 0 0 0 3px red inset; */
+}
+
+body {
+  font-size: 1.6rem;
+  font-family: "Dosis", sans-serif;
+
+  background-color: var(--gray);
+  color: #fff;
+}
+nav {
+  background-color: #fff;
+  margin-bottom: 5rem !important;
+}
+
+h1 {
+  font-size: 4rem !important;
+  margin: 0.8rem 4rem;
+  font-weight: bolder;
+  font-family: "Lora", serif;
+}
+h1 a {
+  font-size: 4rem !important;
+  color: var(--red) !important;
+}
+h1 img {
+  width: 50px !important;
+  height: 50px !important;
+}
+nav li a {
+  color: var(--black) !important;
+  margin: 0.8rem;
+  font-family: "Lora", serif;
+}
+
+nav li a.dropdown-item {
+  padding: 0.8rem;
+}
+nav li a.dropdown-item:hover {
+  color: white !important;
+}
+
+.dropdown-item:focus,
+.dropdown-item:hover {
+  width: 100% !important;
+  background-color: var(--red) !important;
+  /* margin: 0 !important; */
+}
+nav .navbar-toggler {
+  background-color: var(--red);
+  font-size: 1.7rem;
+}
+
+main {
+  padding: 10rem 4rem;
+  /* margin-top: 10rem !important; */
+  min-height: 795px; /* je le met afin d'empêcher le footer de remonter dans la page*/
+  transition: all 0.2s;
+}
+
+/********************************* Page Accueil ***********************************/
+h2 {
+  font-size: 5rem !important;
+  color: var(--red);
+  font-weight: bolder;
+}
+.films .row {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.films > .row > div {
+  padding: 3rem;
+}
+.card {
+  color: var(--gray);
+  box-shadow: var(--box-shadow-dark) !important;
+  transition: all 1s;
+}
+.card:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+  box-shadow: var(--box-shadow-light) !important;
+}
+
+.card-body {
+  text-align: center;
+}
+
+.card-body h3 {
+  font-size: 3rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  font-weight: bolder;
+}
+.card-body h4 {
+  font-size: 2rem;
+  font-weight: 100;
+  padding-bottom: 0.8rem;
+  color: var(--gray);
+}
+img {
+  width: 100%;
+}
+
+a.btn,
+input.btnpanier {
+  background-color: var(--red) !important;
+  color: white;
+  padding: 0.8rem;
+  font-size: 1.3rem !important;
+  font-weight: bold;
+}
+
+a.btn.info {
+  background-color: var(--blue) !important;
+  color: #fff !important;
+  padding: 0.8rem;
+  font-size: 1.3rem !important;
+  font-weight: bold;
+}
+
+/************************************* Page d'un film ********************************/
+
+.film {
+  width: 90%;
+  margin: 0 auto;
+  background-color: var(--gray);
+  padding: 2rem 3rem;
+  transition: all 0.5s;
+  box-shadow: var(--box-shadow-light) !important;
+}
+
+.film i {
+  font-size: 5rem !important;
+}
+
+.cardDetails {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.detailsImg img {
+  box-shadow: var(--box-shadow-light);
+}
+
+.detailsContent span {
+  color: #87556f;
+  font-size: 2.5rem;
+  font-weight: bolder;
+}
+/* .detailsContent  .row {
+  margin: 3rem 2rem;
+} */
+
+.detailsContent p,
+ul {
+  font-size: 2rem;
+}
+/******************** Page de gestion des films (formulaire) ************************/
+
+form.back {
+  width: 50%;
+  margin: 0 auto;
+  box-shadow: var(--box-shadow-light) !important;
+}
+
+form.back > div.row {
+  font-size: 1.8rem;
+}
+
+form.back .row {
+  padding: 2.5rem;
+  background-color: #212529;
+}
+
+form.back label:not(.form-check-label) {
+  margin-bottom: 1.6rem;
+  font-weight: bolder;
+  color: var(--black);
+}
+form.back .form-control {
+  font-size: 1.5rem !important;
+}
+
+form.back button {
+  font-size: 1.4rem !important;
+}
+
+.active {
+  background-color: var(--red) !important;
+  color: white !important;
+  font-weight: bolder;
+}
+
+table,
+.sidebarre {
+  background-color: #353535;
+  color: white !important;
+  box-shadow: var(--box-shadow-light) !important;
+}
+
+.bi {
+  color: white !important;
+  font-size: 1.8rem;
+}
+
+/*
+input{
+  outline: 1px solid var(--red) !important;
+  
+  } */
+/* Footer */
+
+footer {
+  background-color: var(--black);
+  height: 100px !important ;
+}
+
+/* Page panier */
+
+.panier img {
+  width: 40px;
+  padding: 8px 0;
+}
+.panier div {
+  width: 80%;
+  padding: 10px;
+  border-radius: 6px;
+}
+table {
+  border-collapse: collapse;
+  /* width: 100%; */
+}
+th {
+  padding: 10px 0;
+  font-weight: 400;
+}
+
+/* classe pour cacher les card quand on click sur une  */
+.hidden {
+  padding: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  transition: all 0.5s;
+}
+
+/* Card profil */
+
+.cardFilm {
+  position: relative;
+  width: 650px;
+  /* height: 500px; */
+  background: #000;
+  margin: 0 auto;
+}
+
+.cardFilm .image {
+  width: 100%;
+  margin: 0 auto;
+  height: 100%;
+  overflow: hidden;
+}
+
+.cardFilm .image img {
+  transition: 0.5s;
+}
+
+.cardFilm:hover .image img {
+  opacity: 0.5;
+  transform: translateX(50%);
+}
+
+.cardFilm .details {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 70%;
+  height: 100%;
+  background: var(--red);
+  transition: 0.5s;
+  transform-origin: left;
+  transform: perspective(2000px) rotateY(-90deg);
+}
+
+.cardFilm:hover .details {
+  transform: perspective(2000px) rotateY(0deg);
+}
+
+.cardFilm .details .center {
+  padding: 80px !important;
+  text-align: center;
+  background: #fff;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
