@@ -42,7 +42,7 @@ if (isset($_GET["id"]) && isset($_GET["action"]) && $_GET["action"] === 'deleteU
 require_once '../inc/header.inc.php';
 ?>
 
-<div class="d-flex flex-column m-auto mt-5 table-responsive">
+<div class="d-flex flex-column m-auto mt-5 table-responsive px-5">
   <?php echo $info; ?>
   <!-- Table displaying all users with delete and modify role buttons -->
   <h2 class="text-center fw-bolder mb-5 text-danger">List of users</h2>

@@ -1,12 +1,9 @@
 <?php
 require_once '../inc/functions.inc.php';
+
 $info = '';
 $buttonText = "Add film"; // Default button text (for adding)
-
-if (isset($_GET['action']) && $_GET['action'] == 'update' && isset($_GET['id'])) {
-  $id = $_GET['id']; // Get the film ID from the URL
-  $buttonText = "Update film"; // Change the button text for update mode
-}
+$id = null; // Initialize $id to null
 
 // Check if a user is logged in AND if they are an admin.
 if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
@@ -15,21 +12,23 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
   exit;
 }
 
-// Initialize variables to hold form data (with default values)
-$title = isset($_POST['title']) ? trim($_POST['title']) : '';
-$director = isset($_POST['director']) ? trim($_POST['director']) : '';
-$actors = isset($_POST['actors']) ? trim($_POST['actors']) : '';
-$ageLimit = isset($_POST['ageLimit']) ? trim($_POST['ageLimit']) : '';
-$duration = isset($_POST['duration']) ? trim($_POST['duration']) : '';
-$synopsis = isset($_POST['synopsis']) ? trim($_POST['synopsis']) : '';
-$date = isset($_POST['date']) ? trim($_POST['date']) : '';
-$price = isset($_POST['price']) ? trim($_POST['price']) : '';
-$stock = isset($_POST['stock']) ? trim($_POST['stock']) : '';
-$category_id = isset($_POST['categories']) ? trim($_POST['categories']) : '';
+// Initialize form fields
+$title = '';
+$director = '';
+$actors = '';
+$ageLimit = '';
+$duration = '';
+$synopsis = '';
+$date = '';
+$price = '';
+$stock = '';
+$category_id = '';
+$image = "assets/img/default.jpg"; // Default image path
 
 //Check if we're in "update" mode
 if (isset($_GET['action']) && $_GET['action'] == 'update' && isset($_GET['id'])) {
   $id = $_GET['id']; // Get the film ID from the URL
+  $buttonText = "Update film"; // Change the button text for update mode
   $film = getFilmById($id); // Fetch the film data
   if ($film) {
     // Pre-fill the form with existing data
@@ -60,14 +59,13 @@ if (!empty($_POST)) {
   $price = trim($_POST['price']);
   $stock = trim($_POST['stock']);
   $category_id = trim($_POST['categories']);
-  $id = trim($_POST['id']);
+  $id = isset($_POST['id']) && !empty($_POST['id']) ? trim($_POST['id']) : null; // Handle potential missing ID
 
   // Handle file upload
-  $image = "assets/img/default.jpg"; // Default image path
   $uploadDir = __DIR__ . '/../assets/img/';
 
   if (!file_exists($uploadDir)) {
-    mkdir($uploadDir, 0777, true); // Create a directory if it does not exist
+    mkdir($uploadDir, 0777, true); // Create directory recursively
     chmod($uploadDir, 0777); // Change permissions
   }
 
@@ -76,21 +74,23 @@ if (!empty($_POST)) {
     $info .= alert("Upload directory is not writable!", "danger");
   } else {
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-      $imageName = basename($_FILES['image']['name']);
-      $uploadFile = $uploadDir . $imageName;
+      $fileInfo = pathinfo($_FILES['image']['name']);
+      $fileExtension = strtolower($fileInfo['extension']);
+      $fileName = uniqid('film_') . '.' . $fileExtension; // Generate a unique name
+      $uploadFile = $uploadDir . $fileName;
 
       // Check if it's a valid image type
-      $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-      if (in_array($_FILES['image']['type'], $allowedTypes)) {
+      $allowedTypes = ['jpeg', 'jpg', 'png', 'gif', 'webp'];
+      if (in_array($fileExtension, $allowedTypes)) {
         // Move the uploaded file to the correct directory
         if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadFile)) {
           // File was moved successfully
-          $image = 'assets/img/' . $imageName; // Update $image with the correct path
+          $image = 'assets/img/' . $fileName; // Update $image with the correct path
         } else {
           $info .= alert("Error uploading file!", "danger");
         }
       } else {
-        $info .= alert("Invalid file type! Allowed types: JPEG, PNG, GIF, WEBP", "danger");
+        $info .= alert("Invalid file type! Allowed types: JPEG, JPG, PNG, GIF, WEBP", "danger");
       }
     } else if (isset($_POST['old_image']) && !empty($_POST['old_image'])) {
       $image = $_POST['old_image'];
@@ -99,7 +99,7 @@ if (!empty($_POST)) {
 
   $check = true;
   foreach ($_POST as $key => $value) {
-    if (empty($value)) {
+    if (empty($value) && $key !== 'id' && $key !== 'old_image') {
       $check = false;
     }
   }
@@ -145,25 +145,27 @@ if (!empty($_POST)) {
       $info .= alert("The category is invalid!", "danger");
     }
     // Check the Price
-    if (!isset($_POST['price']) || strlen(trim($_POST['price'])) < 2) {
-      $info .= alert('The price is invalid! Must be at least 3 digits long!', 'danger');
+    if (!isset($_POST['price']) || !is_numeric(trim($_POST['price'])) || trim($_POST['price']) < 0) {
+      $info .= alert('The price is invalid! Must be a positive number.', 'danger');
     }
 
     // Check the Stock
-    if (!isset($_POST['stock']) || strlen(trim($_POST['stock'])) < 1) {
-      $info .= alert('The stock is invalid! Must be at least 1 digit long', 'danger');
+    if (!isset($_POST['stock']) || !is_numeric(trim($_POST['stock'])) || trim($_POST['stock']) < 0) {
+      $info .= alert('The stock is invalid! Must be a positive number', 'danger');
     }
 
 
-
     if (empty($info)) {
-      if (isset($_POST['id']) && !empty($_POST['id'])) {
+      if ($id) {
+        //if id exists, call update function
         updateFilm($title, $director, $actors, $ageLimit, $duration, $synopsis, $date, $image, $price, $stock, $category_id, $id);
-      } else {
-        addFilm($title, $director, $actors, $ageLimit, $duration, $synopsis, $date, $image, $price, $stock, $category_id);
+        $_SESSION['info'] = alert('Film updated successfuly!', 'success');
 
+      } else {
+        //else, call add function
+        addFilm($title, $director, $actors, $ageLimit, $duration, $synopsis, $date, $image, $price, $stock, $category_id);
+        $_SESSION['info'] = alert('Film successfuly added!', 'success');
       }
-      $_SESSION['info'] = alert('Film successfuly added!', 'success');
       header("Location:films.php");
       exit;
     }

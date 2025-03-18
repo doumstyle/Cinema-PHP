@@ -133,9 +133,9 @@ require_once '../inc/header.inc.php';
     </form>
   </div>
 
-  <div class="col-sm-12 col-md-6 d-flex flex-column mt-5 pe-3">
+  <div class="col-sm-12 col-md-6 d-flex flex-column mt-5 px-5">
     <h2 class="text-center fw-bolder mb-5 text-danger">Categories list</h2>
-    <table class="table table-dark table-bordered mt-5 ">
+    <table class="table table-dark table-bordered">
       <thead>
         <tr>
           <th>ID</th>

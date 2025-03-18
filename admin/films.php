@@ -4,7 +4,7 @@ require_once "../inc/header.inc.php";
 $films = getFilms(); // Fetch all films from the database
 ?>
 
-<div class="container d-flex flex-column m-auto my-5" data-bs-theme="dark">
+<div class="d-flex flex-column m-auto my-5 px-5" data-bs-theme="dark">
 
   <h2 class="text-center fw-bolder mb-5 text-danger">List of Films</h2>
   <a href="filmForm.php" class="btn align-self-end">Add a Film</a>
@@ -13,9 +13,7 @@ $films = getFilms(); // Fetch all films from the database
       <tr>
         <th>ID</th>
         <th>Title</th>
-        <th rowspan="3">Cover Art</th>
-        <th></th>
-        <th></th>
+        <th>Cover Art</th>
         <th>Director</th>
         <th>Actors</th>
         <th>Age Restriction</th>
@@ -34,8 +32,8 @@ $films = getFilms(); // Fetch all films from the database
         <?php foreach ($films as $film): ?>
           <tr>
             <td><?= $film['id']; ?></td>
-            <td><?= $film['title']; ?></td>
-            <td colspan="3"><img src="<?= RACINE_SITE . $film['image']; ?>" alt="Movie cover art" class="img-fluid"
+            <td style="min-width: 150px;"><?= $film['title']; ?></td>
+            <td><img src="<?= RACINE_SITE . $film['image']; ?>" alt="Movie cover art" class="img-fluid"
                 style="min-width: 200px;"></td>
             <td><?= $film['director']; ?></td>
             <td><?= $film['actors']; ?></td>
@@ -45,7 +43,7 @@ $films = getFilms(); // Fetch all films from the database
             <td><?= $film['duration']; ?></td>
             <td><?= $film['price']; ?>€</td>
             <td><?= $film['stock']; ?></td>
-            <td><?= $film['synopsis']; ?></td>
+            <td class="w-50"><?= $film['synopsis']; ?></td>
             <td><?= $film['date']; ?></td>
             <td class="text-center"><a href=""><i class="bi bi-trash3-fill"></i></a></td>
             <td class="text-center"><a href="filmForm.php?action=update&id=<?= $film['id']; ?>"><i

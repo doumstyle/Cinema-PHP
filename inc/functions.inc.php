@@ -1,7 +1,7 @@
 <?php
 
 
-define('RACINE_SITE', "http://localhost/cinema/");
+define('RACINE_SITE', "http://localhost/Cinema-PHP/");
 session_start();
 // Alert function
 function alert(string $content, string $class): string
