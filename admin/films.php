@@ -1,14 +1,24 @@
 <?php
 require_once "../inc/functions.inc.php";
-require_once "../inc/header.inc.php";
 $films = getFilms(); // Fetch all films from the database
+
+// Delete film on trash icon click
+if (isset($_GET["action"]) && $_GET["action"] == "delete" && isset($_GET["id"])) {
+  $id = $_GET["id"];
+  deleteFilm($id);
+  $_SESSION['info'] = alert("Film deleted successfully!", "success");
+  header("Location:films.php");
+}
+
+
+require_once "../inc/header.inc.php";
 ?>
 
 <div class="d-flex flex-column m-auto my-5 px-5" data-bs-theme="dark">
 
-  <h2 class="text-center fw-bolder mb-5 text-danger">List of Films</h2>
+  <h2 class="text-center text-danger fw-bolder mb-5">List of Films</h2>
   <a href="filmForm.php" class="btn align-self-end">Add a Film</a>
-  <table class="table table-dark table-bordered mt-5 ">
+  <table class="table table-bordered table-dark mt-5">
     <thead>
       <tr>
         <th>ID</th>
@@ -45,7 +55,8 @@ $films = getFilms(); // Fetch all films from the database
             <td><?= $film['stock']; ?></td>
             <td class="w-50"><?= $film['synopsis']; ?></td>
             <td><?= $film['date']; ?></td>
-            <td class="text-center"><a href=""><i class="bi bi-trash3-fill"></i></a></td>
+            <td class="text-center"><a href="films.php?action=delete&id=<?= $film['id']; ?>"><i
+                  class="bi bi-trash3-fill"></i></a></td>
             <td class="text-center"><a href="filmForm.php?action=update&id=<?= $film['id']; ?>"><i
                   class="bi bi-pen-fill"></i></a></td>
           </tr>

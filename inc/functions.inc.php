@@ -6,13 +6,13 @@ session_start();
 // Alert function
 function alert(string $content, string $class): string
 {
-  return '<div class="w-50 mx-auto d-flex align-items-center alert alert-' . $class . '">' . '<span class="mx-auto">' . $content . '</span>' . '<button type="button" class="btn-close align-self-center position-absolute top-50% end-0" data-bs-dismiss="alert"></button>' . '</div>';
+  return '<div class="d-flex alert alert-' . $class . ' align-items-center w-50 mx-auto"><span class="mx-auto">' . $content . '</span><button type="button" class="btn-close align-self-center position-absolute end-0 top-50" data-bs-dismiss="alert"></button></div>';
 }
 
 // Debugging function
 function debug($var)
 {
-  echo '<pre class="border border-dark bg-light text-danger fw-bold w-50 p-5 mt-5">';
+  echo '<pre class="bg-light border border-dark p-5 text-danger w-50 fw-bold mt-5">';
   var_dump($var);
   echo '</pre>';
 }
@@ -374,15 +374,18 @@ function updateFilm(string $title, string $director, string $actors, string $age
   ]);
 }
 
+// Delete film
+function deleteFilm($id): void
+{
+  $pdo = dbConnect();
+  $sql = "DELETE FROM films WHERE id = :id";
+  $request = $pdo->prepare($sql);
+  $request->execute([':id' => $id]);
+}
+
 function logout(): void
 {
   session_destroy();
   header("Location:" . RACINE_SITE . "index.php");
   exit;
 }
-
-
-
-
-
-
