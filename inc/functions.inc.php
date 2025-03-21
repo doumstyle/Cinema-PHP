@@ -341,6 +341,15 @@ function getFilms(): array
   return $result;
 }
 
+function getSixFilms(): array
+{
+  $pdo = dbConnect();
+  $sql = 'SELECT * FROM films LIMIT 6';
+  $request = $pdo->query($sql);
+  $result = $request->fetchAll();
+  return $result;
+}
+
 function getFilmById(int $id): ?array
 {
   $pdo = dbConnect();
