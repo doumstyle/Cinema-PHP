@@ -1,6 +1,7 @@
 <?php
 require_once "../inc/functions.inc.php";
 $films = getFilms(); // Fetch all films from the database
+$actors = [];
 
 // Delete film on trash icon click
 if (isset($_GET["action"]) && $_GET["action"] == "delete" && isset($_GET["id"])) {
@@ -8,6 +9,10 @@ if (isset($_GET["action"]) && $_GET["action"] == "delete" && isset($_GET["id"]))
   deleteFilm($id);
   $_SESSION['info'] = alert("Film deleted successfully!", "success");
   header("Location:films.php");
+}
+
+foreach ($films as $key => $film) {
+  $actors = stringToarray($film["actors"]);
 }
 
 
@@ -46,14 +51,20 @@ require_once "../inc/header.inc.php";
             <td><img src="<?= RACINE_SITE . $film['image']; ?>" alt="Movie cover art" class="img-fluid"
                 style="min-width: 200px;"></td>
             <td><?= $film['director']; ?></td>
-            <td><?= $film['actors']; ?></td>
+            <td>
+              <?php
+              $actors = stringToarray($film["actors"]);
+              foreach ($actors as $actor): ?>
+                <?= $actor; ?>,
+              <?php endforeach; ?>
+            </td>
             <td><?= $film['ageLimit']; ?></td>
             <td><?php $category = getCategoryById($film['category_id']);
             echo $category['name']; ?></td>
             <td><?= $film['duration']; ?></td>
             <td><?= $film['price']; ?>€</td>
             <td><?= $film['stock']; ?></td>
-            <td class="w-50"><?= $film['synopsis']; ?></td>
+            <td class="w-50"><?= substr($film['synopsis'], 0, 150); ?>...</td>
             <td><?= $film['date']; ?></td>
             <td class="text-center"><a href="films.php?action=delete&id=<?= $film['id']; ?>"><i
                   class="bi bi-trash3-fill"></i></a></td>

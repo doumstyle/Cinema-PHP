@@ -53,32 +53,32 @@ $user = $_SESSION['user'];
 
           <table class="table">
             <tr>
-              <th scope="row" class="fw-bold">Nom</th>
+              <th scope="row" class="fw-bold">Lastname</th>
               <td><?= $user['lastname'] ?></td>
 
             </tr>
             <tr>
-              <th scope="row" class="fw-bold">Prenom</th>
+              <th scope="row" class="fw-bold">Firstname</th>
               <td><?= $user['firstname'] ?></td>
 
             </tr>
             <tr>
-              <th scope="row" class="fw-bold">Pseudo</th>
+              <th scope="row" class="fw-bold">Nickname</th>
               <td colspan="2"><?= $user['nickname'] ?></td>
 
             </tr>
             <tr>
-              <th scope="row" class="fw-bold">email</th>
+              <th scope="row" class="fw-bold">Email</th>
               <td colspan="2"><?= $user['email'] ?></td>
 
             </tr>
             <tr>
-              <th scope="row" class="fw-bold">Tel</th>
+              <th scope="row" class="fw-bold">Phone</th>
               <td colspan="2"><?= $user['phone'] ?></td>
 
             </tr>
             <tr>
-              <th scope="row" class="fw-bold">Adresse</th>
+              <th scope="row" class="fw-bold">Address</th>
               <td colspan="2">
                 <?= $user['address'] . ' ' . $user['zipcode'] . ' ' . $user['city'] . ' ' . $user['country'] ?>
               </td>
@@ -86,7 +86,7 @@ $user = $_SESSION['user'];
             </tr>
 
           </table>
-          <a href="" class="btn mt-5">Modifier vos informations</a>
+          <a href="" class="btn mt-5">Modify info</a>
         </div>
       </div>
     </div>

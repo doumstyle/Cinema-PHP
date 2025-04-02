@@ -21,15 +21,17 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&family=Lora:ital,wght@0,400..700;1,400..700&display=swap"
     rel="stylesheet">
+  <!-- Script pour Stripe -->
+  <script src="https://js.stripe.com/v3/"></script>
   <link rel="stylesheet" href="<?= RACINE_SITE; ?>assets/css/style.css">
   <title>Movies</title>
 </head>
 
 <body>
 
-  <header>
-    <nav class="navbar navbar-expand-lg fixed-top ">
-      <div class="container">
+  <header class="mb-5">
+    <nav class="navbar navbar-expand-lg fixed-top">
+      <div class="container-fluid">
         <h1><a class="navbar-brand" href="<?= RACINE_SITE; ?>index.php">M <img
               src="<?= RACINE_SITE; ?>assets/img/logo.png" alt=""> VIES</a></h1>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -37,14 +39,14 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav w-100 d-flex justify-content-end">
+          <ul class="d-flex navbar-nav justify-content-end w-100">
             <li class="nav-item">
-              <a class="nav-link " aria-current="page" href="<?= RACINE_SITE; ?>index.php">Home</a>
+              <a class="nav-link" aria-current="page" href="<?= RACINE_SITE; ?>index.php">Home</a>
             </li>
 
 
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+            <li class="dropdown nav-item">
+              <a class="dropdown-toggle nav-link" href="#" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
                 Categories
               </a>
@@ -52,7 +54,9 @@
                 <?php $categories = getAllCategories('name'); ?>
                 <?php foreach ($categories as $category): ?>
 
-                  <li><a class="dropdown-item text-dark fs-4" href="#"><?= $category['name']; ?></a></li>
+                  <li><a class="dropdown-item text-dark fs-4"
+                      href="<?php echo RACINE_SITE . 'index.php?category_id=' . $category['id']; ?>"><?php echo ucfirst($category['name']); ?></a>
+                  </li>
 
                 <?php endforeach; ?>
 
@@ -61,7 +65,7 @@
 
 
             <?php if (!isset($_SESSION['user'])): ?>
-              <li class=" nav-item">
+              <li class="nav-item">
                 <a class="nav-link" href="<?= RACINE_SITE; ?>register.php">Register</a>
               </li>
               <li class="nav-item">
@@ -78,8 +82,8 @@
             <?php endif; ?>
 
             <?php if (isset($_SESSION['user']) && $_SESSION['user']['role'] === 'admin'): ?>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown"
+              <li class="dropdown nav-item">
+                <a class="dropdown-toggle nav-link" href="" role="button" data-bs-toggle="dropdown"
                   aria-expanded="false">Backoffice</a>
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item text-dark fs-4"
@@ -107,12 +111,12 @@
 
               </li>
             <?php endif; ?>
-            <?php if (!isset($_SESSION['user'])): ?><?php endif; ?>
 
 
 
             <li class="nav-item">
-              <a class="nav-link" href=""><i class="bi bi-cart fs-2"><sup></sup></i></a>
+              <a class="nav-link" href="<?= RACINE_SITE; ?>store/cart.php"><i
+                  class="bi bi-cart fs-2"><sup></sup></i></a>
             </li>
 
 

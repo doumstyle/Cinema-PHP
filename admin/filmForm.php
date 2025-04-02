@@ -111,15 +111,31 @@ if (!empty($_POST)) {
       $info .= alert('The title is invalid! Must be at least 2 characters long', 'danger');
     }
 
-    // Check the Director field
-    if (!isset($_POST['director']) || strlen(trim($_POST['director'])) < 2) {
-      $info .= alert('The director is invalid! Must be at least 2 characters long', 'danger');
+    $regex_acteurs = '/.\/./';
+    //Explications: 
+    //    .* : correspond à n'importe quel nombre de caractères (y compris zéro caractère), sauf une nouvelle ligne.
+    //     \/ : correspond au caractère /. Le caractère / doit être précédé d'un backslash \ car il est un caractère spécial en expression régulière. Le backslash est appelé caractère d'échappement et il permet de spécifier que le caractère qui suit doit être considéré comme un caractère ordinaire.
+    //     .* : correspond à n'importe quel nombre de caractères (y compris zéro caractère), sauf une nouvelle ligne.
+    if (!isset($director) || strlen($director) < 2 || preg_match($regex_chiffre, $director)) {
+
+      $info .= alert("Le champ Réalisateur n'est pas valide", "danger");
+    }
+    if (!isset($actors) || strlen($actors) < 3 || preg_match($regex_chiffre, $actors) || !preg_match($regex_acteurs, $actors)) { // valider que l'utilisateur a bien inséré le symbole '/' : chaîne de caractères qui contient au moins un caractère avant et après le symbole /.
+
+      $info .= alert("Le champ acteurs n'est pas valide, il faut séparer les acteurs avec le symbole", "danger");
+
     }
 
-    // Check the Actors field
-    if (!isset($_POST['actors']) || strlen(trim($_POST['actors'])) < 2) {
-      $info .= alert('The actors are invalid! Must be at least 2 characters long', 'danger');
-    }
+
+    // // Check the Director field
+    // if (!isset($_POST['director']) || strlen(trim($_POST['director'])) < 2) {
+    //   $info .= alert('The director is invalid! Must be at least 2 characters long', 'danger');
+    // }
+
+    // // Check the Actors field
+    // if (!isset($_POST['actors']) || strlen(trim($_POST['actors'])) < 2) {
+    //   $info .= alert('The actors are invalid! Must be at least 2 characters long', 'danger');
+    // }
 
     // Check the Age Restriction
     if (!isset($_POST['ageLimit']) || strlen(trim($_POST['ageLimit'])) < 2 || strlen(trim($_POST['ageLimit'])) > 3) {

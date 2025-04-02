@@ -34,20 +34,20 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['id']))
   }
 }
 
-// // Update action
-// if (isset($_GET['action']) && $_GET['action'] == 'update' && isset($_GET['id'])) {
-//   $action = 'update';
-//   $id = $_GET['id'];
-//   $category = getCategoryById($id);
+// Update action
+if (isset($_GET['action']) && $_GET['action'] == 'update' && isset($_GET['id'])) {
+  $action = 'update';
+  $id = $_GET['id'];
+  $category = getCategoryById($id);
 
-//   if ($category) {
-//     $id = $category['id'];
-//     $name = $category['name'];
-//     $description = $category['description'];
-//   } else {
-//     $info .= alert('Category not found!', 'danger');
-//   }
-// }
+  if ($category) {
+    $id = $category['id'];
+    $name = $category['name'];
+    $description = $category['description'];
+  } else {
+    $info .= alert('Category not found!', 'danger');
+  }
+}
 
 // Form Submission
 if (!empty($_POST)) {
@@ -108,8 +108,8 @@ require_once '../inc/header.inc.php';
 ?>
 
 <div class="row mt-2" style="padding-top: 8rem;">
-  <div class="col-sm-12 col-md-6 mt-5">
-    <h2 class="text-center fw-bolder mb-5 text-danger">Categories Management</h2>
+  <div class="col-md-6 col-sm-12 mt-5">
+    <h2 class="text-center text-danger fw-bolder mb-5">Categories Management</h2>
     <?= $info; ?>
     <form action="" method="post" class="back">
       <input type="hidden" name="action" value="<?= $action; ?>">
@@ -133,9 +133,9 @@ require_once '../inc/header.inc.php';
     </form>
   </div>
 
-  <div class="col-sm-12 col-md-6 d-flex flex-column mt-5 px-5">
-    <h2 class="text-center fw-bolder mb-5 text-danger">Categories list</h2>
-    <table class="table table-dark table-bordered">
+  <div class="col-md-6 col-sm-12 d-flex flex-column mt-5 px-5">
+    <h2 class="text-center text-danger fw-bolder mb-5">Categories list</h2>
+    <table class="table table-bordered table-dark">
       <thead>
         <tr>
           <th>ID</th>

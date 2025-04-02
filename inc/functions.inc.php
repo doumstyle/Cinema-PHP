@@ -1,8 +1,12 @@
 <?php
 
-
 define('RACINE_SITE', "http://localhost/Cinema-PHP/");
 session_start();
+
+if (!isset($_SESSION['cart'])) {
+  $_SESSION['cart'] = [];
+}
+
 // Alert function
 function alert(string $content, string $class): string
 {
@@ -112,6 +116,40 @@ function createUsersTable(): void
   )";
   $pdo->exec($sql);
 }
+
+function createTableOrders()
+{
+
+  $pdo = dbConnect();
+  $sql = " CREATE TABLE IF NOT EXISTS orders (
+       id_order INT PRIMARY KEY AUTO_INCREMENT,
+       user_id INT NOT NULL,
+       price FLOAT,
+       created_at DATETIME,
+       is_paid ENUM('0', '1')
+  )";
+  $request = $pdo->exec($sql);
+
+}
+
+// createTableOrders();
+
+function createTableOrderDetails()
+{
+
+  $pdo = dbConnect();
+  $sql = " CREATE TABLE IF NOT EXISTS order_details (
+       order_id INT NOT NULL,
+       film_id INT NOT NULL,
+       price_film FLOAT NOT NULL,
+       quantity INT NOT NULL
+      
+  )";
+  $request = $pdo->exec($sql);
+
+}
+
+// createTableOrderDetails();
 
 // createUsersTable();
 
@@ -261,7 +299,7 @@ function getAllCategories($order = "id"): array
   return $result;
 }
 
-function getCategoryById(int $id): ?array
+function getCategoryById(int $id): mixed
 {
   $pdo = dbConnect();
   $sql = "SELECT * FROM categories WHERE id = :id";
@@ -358,8 +396,12 @@ function getFilmById(int $id): ?array
   $request->execute(array(
     ":id" => $id
   ));
-  $result = $request->fetch();
 
+  $result = $request->fetch();
+  // Modify the image path to include the full URL
+  if ($result) {
+    $result['image'] = RACINE_SITE . $result['image'];
+  }
   return $result;
 }
 function updateFilm(string $title, string $director, string $actors, string $ageLimit, string $duration, string $synopsis, string $date, string $image, float $price, int $stock, int $category_id, int $id): void
@@ -392,9 +434,77 @@ function deleteFilm($id): void
   $request->execute([':id' => $id]);
 }
 
+function getFilmsByDate(): mixed
+{
+  $pdo = dbConnect();
+  $sql = "SELECT * FROM films ORDER BY date DESC LIMIT 6";
+  $request = $pdo->query($sql);
+  $result = $request->fetchAll();
+
+  return $result;
+}
+function getFilmsByCategory($id): mixed
+{
+  $pdo = dbConnect();
+  $sql = "SELECT * FROM films WHERE category_id = :id";
+  $request = $pdo->prepare($sql);
+  $request->execute(array(
+    ':id' => $id
+  ));
+  $result = $request->fetchAll();
+
+  return $result;
+}
+
 function logout(): void
 {
-  session_destroy();
+  unset($_SESSION['user']);
   header("Location:" . RACINE_SITE . "index.php");
   exit;
+}
+
+function stringToArray(string $string): array
+{
+  $array = explode('/', trim($string, '/'));
+  return $array;
+}
+
+
+function addOrder(int $user_id, float $price, string $created_at, string $is_paid): ?bool
+{
+  $pdo = dbConnect();
+  $sql = "INSERT INTO orders(user_id, price, created_at, is_paid) VALUES (:user_id, :price, :created_at, :is_paid)";
+  $request = $pdo->prepare($sql);
+  $request->execute(array(
+    ':user_id' => $user_id,
+    ':price' => $price,
+    ':created_at' => $created_at,
+    ':is_paid' => $is_paid
+
+  ));
+  if ($request) {
+    return true;
+  }
+}
+
+function lastId(): array
+{
+  $pdo = dbConnect();
+  $sql = "SELECT MAX(id_order) AS lastId FROM orders";
+  $request = $pdo->query($sql);
+  $result = $request->fetch();
+  return $result;
+}
+
+function addOrderDetails(int $orderId, int $filmId, float $filmPrice, int $quantity): void
+{
+  $pdo = dbConnect();
+  $sql = "INSERT INTO order_details(order_id, film_id, price_film, quantity) VALUES (:order_id, :film_id, :price_film,:quantity)";
+  $request = $pdo->prepare($sql);
+  $request->execute(array(
+    ':order_id' => $orderId,
+    ':film_id' => $filmId,
+    ':price_film' => $filmPrice,
+    ':quantity' => $quantity,
+  ));
 }
